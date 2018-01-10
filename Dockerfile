@@ -1,9 +1,9 @@
-FROM alpine:3.6 as protoc_builder
+FROM alpine:3.7 as protoc_builder
 RUN apk add --no-cache build-base curl automake autoconf libtool git zlib-dev
 
-ENV GRPC_VERSION=1.6.1 \
-    GRPC_JAVA_VERSION=1.6.1 \
-    PROTOBUF_VERSION=3.4.1 \
+ENV GRPC_VERSION=1.8.3 \
+    GRPC_JAVA_VERSION=1.8.0 \
+    PROTOBUF_VERSION=3.5.1 \
     PROTOBUF_C_VERSION=1.3.0 \
     PROTOC_GEN_DOC_VERSION=1.0.0-rc \
     OUTDIR=/out
@@ -75,7 +75,8 @@ ENV SWIFT_VERSION=4.0 \
     LLVM_VERSION=5.0.0
 RUN curl -L http://releases.llvm.org/${LLVM_VERSION}/clang+llvm-${LLVM_VERSION}-linux-x86_64-ubuntu16.04.tar.xz | tar --strip-components 1 -C /usr/local/ -xJv
 RUN curl -L https://swift.org/builds/swift-${SWIFT_VERSION}-release/ubuntu1604/swift-${SWIFT_VERSION}-RELEASE/swift-${SWIFT_VERSION}-RELEASE-ubuntu16.04.tar.gz | tar --strip-components 1 -C / -xz
-ENV SWIFT_PROTOBUF_VERSION=0.9.904
+
+ENV SWIFT_PROTOBUF_VERSION=1.0.2
 RUN mkdir -p /swift-protobuf && \
     curl -L https://github.com/apple/swift-protobuf/archive/${SWIFT_PROTOBUF_VERSION}.tar.gz | tar --strip-components 1 -C /swift-protobuf -xz
 RUN apt-get install -y libcurl4-openssl-dev
@@ -92,8 +93,8 @@ RUN find /protoc-gen-swift/ -name 'lib*.so*' -exec patchelf --set-rpath /protoc-
     done
 
 
-FROM rust:1.20.0 as rust_builder
-ENV RUST_PROTOBUF_VERSION=1.4.1 \
+FROM rust:1.22.1 as rust_builder
+ENV RUST_PROTOBUF_VERSION=1.4.3 \
     OUTDIR=/out
 RUN mkdir -p ${OUTDIR}
 RUN apt-get update && \
@@ -116,7 +117,7 @@ RUN upx --lzma \
         /out/usr/bin/protoc-gen-*
 
 
-FROM alpine:3.6
+FROM alpine:3.7
 RUN apk add --no-cache libstdc++
 COPY --from=packer /out/ /
 COPY --from=rust_builder /out/ /
