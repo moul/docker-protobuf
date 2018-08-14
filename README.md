@@ -15,6 +15,7 @@ All inclusive protoc suite, powered by Docker and Alpine Linux.
   - github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
   - github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
   - github.com/mwitkow/go-proto-validators
+  - github.com/moul/protoc-gen-gotemplate
 
 ## Supported languages
 - C
@@ -59,5 +60,5 @@ import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 ```
 
 ## Image Size
-The current image is about ~184mb and one layer. Most the space is spent on Go tools.
+The current image is about ~189mb and one layer. Most the space is spent on Go tools.
 All the binaries are UPX'ed. Including the Swift stdlib.
