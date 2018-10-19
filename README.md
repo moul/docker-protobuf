@@ -1,4 +1,7 @@
 # Protocol Buffers + Docker
+
+[![GuardRails badge](https://badges.production.guardrails.io/moul/docker-protobuf.svg)](https://www.guardrails.io)
+
 All inclusive protoc suite, powered by Docker and Alpine Linux.
 
 ## What's included:
