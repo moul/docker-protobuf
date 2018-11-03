@@ -3,6 +3,7 @@ RUN apk add --no-cache build-base curl automake autoconf libtool git zlib-dev
 
 ENV GRPC_VERSION=1.13.0 \
     GRPC_JAVA_VERSION=1.13.1 \
+    GRPC_WEB_VERSION=1.0.0 \
     PROTOBUF_VERSION=3.6.0.1 \
     PROTOBUF_C_VERSION=1.3.0 \
     PROTOC_GEN_DOC_VERSION=1.1.0 \
@@ -14,6 +15,8 @@ RUN git clone --depth 1 --recursive -b v${GRPC_VERSION} https://github.com/grpc/
     ln -s /protobuf /grpc/third_party/protobuf
 RUN mkdir -p /grpc-java && \
     curl -L https://github.com/grpc/grpc-java/archive/v${GRPC_JAVA_VERSION}.tar.gz | tar xvz --strip-components=1 -C /grpc-java
+RUN mkdir -p /grpc-web && \
+    curl -L https://github.com/grpc/grpc-web/archive/${GRPC_WEB_VERSION}.tar.gz | tar xvz --strip-components=1 -C /grpc-web
 RUN mkdir -p /protobuf-c && \
     curl -L https://github.com/protobuf-c/protobuf-c/releases/download/v${PROTOBUF_C_VERSION}/protobuf-c-${PROTOBUF_C_VERSION}.tar.gz | tar xvz --strip-components=1 -C /protobuf-c
 RUN cd /protobuf && \
@@ -42,6 +45,9 @@ RUN cd /grpc && \
     make install-plugins prefix=${OUTDIR}/usr
 RUN cd /grpc-java/compiler/src/java_plugin/cpp && \
     install -c protoc-gen-grpc-java ${OUTDIR}/usr/bin/
+RUN cd /grpc-web/javascript/net/grpc/web && \
+    make && \
+    install protoc-gen-grpc-web ${OUTDIR}/usr/bin/
 RUN cd /protobuf-c && \
     make install DESTDIR=${OUTDIR}
 RUN find ${OUTDIR} -name "*.a" -delete -or -name "*.la" -delete
