@@ -13,6 +13,7 @@ All inclusive protoc suite, powered by Docker and Alpine Linux.
   - github.com/gogo/protobuf/protoc-gen-gogofast
   - github.com/gogo/protobuf/protoc-gen-gogofaster
   - github.com/gogo/protobuf/protoc-gen-gogoslick
+  - github.com/twitchtv/twirp/protoc-gen-twirp
   - github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
   - github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
   - github.com/mwitkow/go-proto-validators
