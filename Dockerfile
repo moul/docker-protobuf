@@ -67,6 +67,7 @@ RUN go get -u -v -ldflags '-w -s' \
         github.com/ckaznocha/protoc-gen-lint \
         github.com/mwitkow/go-proto-validators/protoc-gen-govalidators \
         moul.io/protoc-gen-gotemplate \
+        github.com/micro/protoc-gen-micro \
         && install -c ${GOPATH}/bin/protoc-gen* ${OUTDIR}/usr/bin/
 
 RUN mkdir -p ${GOPATH}/src/github.com/pseudomuto/protoc-gen-doc && \
