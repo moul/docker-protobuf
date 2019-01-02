@@ -1,4 +1,4 @@
-FROM alpine:3.7 as protoc_builder
+FROM alpine:3.8 as protoc_builder
 RUN apk add --no-cache build-base curl automake autoconf libtool git zlib-dev
 
 ENV GRPC_VERSION=1.16.0 \
@@ -66,8 +66,10 @@ RUN go get -u -v -ldflags '-w -s' \
         github.com/johanbrandhorst/protobuf/protoc-gen-gopherjs \
         github.com/ckaznocha/protoc-gen-lint \
         github.com/mwitkow/go-proto-validators/protoc-gen-govalidators \
+        github.com/lyft/protoc-gen-validate \
         moul.io/protoc-gen-gotemplate \
         github.com/micro/protoc-gen-micro \
+        && (cd ${GOPATH}/src/github.com/lyft/protoc-gen-validate && make build) \
         && install -c ${GOPATH}/bin/protoc-gen* ${OUTDIR}/usr/bin/
 
 RUN mkdir -p ${GOPATH}/src/github.com/pseudomuto/protoc-gen-doc && \
@@ -166,6 +168,10 @@ RUN apk add --no-cache curl && \
         curl -L -o /protobuf/github.com/gogo/protobuf/gogoproto/gogo.proto https://raw.githubusercontent.com/gogo/protobuf/master/gogoproto/gogo.proto && \
         mkdir -p /protobuf/github.com/mwitkow/go-proto-validators && \
         curl -L -o /protobuf/github.com/mwitkow/go-proto-validators/validator.proto https://raw.githubusercontent.com/mwitkow/go-proto-validators/master/validator.proto && \
+        mkdir -p /protobuf/github.com/lyft/protoc-gen-validate/gogoproto && \
+        mkdir -p /protobuf/github.com/lyft/protoc-gen-validate/validate && \
+        curl -L -o /protobuf/github.com/lyft/protoc-gen-validate/gogoproto/gogo.proto https://raw.githubusercontent.com/lyft/protoc-gen-validate/master/gogoproto/gogo.proto && \
+        curl -L -o /protobuf/github.com/lyft/protoc-gen-validate/validate/validate.proto https://raw.githubusercontent.com/lyft/protoc-gen-validate/master/validate/validate.proto && \
         apk del curl
 
 ENTRYPOINT ["/usr/bin/protoc", "-I/protobuf"]
