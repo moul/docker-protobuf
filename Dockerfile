@@ -172,6 +172,7 @@ RUN apk add --no-cache curl && \
         mkdir -p /protobuf/github.com/lyft/protoc-gen-validate/validate && \
         curl -L -o /protobuf/github.com/lyft/protoc-gen-validate/gogoproto/gogo.proto https://raw.githubusercontent.com/lyft/protoc-gen-validate/master/gogoproto/gogo.proto && \
         curl -L -o /protobuf/github.com/lyft/protoc-gen-validate/validate/validate.proto https://raw.githubusercontent.com/lyft/protoc-gen-validate/master/validate/validate.proto && \
-        apk del curl
+        apk del curl && \
+        chmod a+x /usr/bin/protoc
 
 ENTRYPOINT ["/usr/bin/protoc", "-I/protobuf"]
