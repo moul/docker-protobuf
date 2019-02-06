@@ -166,6 +166,7 @@ RUN apk add --no-cache curl && \
         curl -L -o /protobuf/github.com/gogo/protobuf/gogoproto/gogo.proto https://raw.githubusercontent.com/gogo/protobuf/master/gogoproto/gogo.proto && \
         mkdir -p /protobuf/github.com/mwitkow/go-proto-validators && \
         curl -L -o /protobuf/github.com/mwitkow/go-proto-validators/validator.proto https://raw.githubusercontent.com/mwitkow/go-proto-validators/master/validator.proto && \
-        apk del curl
+        apk del curl && \
+        chmod a+x /usr/bin/protoc
 
 ENTRYPOINT ["/usr/bin/protoc", "-I/protobuf"]
